@@ -117,7 +117,8 @@ elif st.session_state.page == "table":
 # Line Chart Page
 elif st.session_state.page == "line_chart":
     st.title("Hasil Prediksi & Probabilitas")
-
+    st.write("Menggunakan Pemodelan Random Forest")
+  
     # Validasi input data
     if st.session_state.input_data is None or 'data' not in st.session_state:
         st.warning("⚠️ Silakan isi data pasien terlebih dahulu di menu Input Data Pasien.")
