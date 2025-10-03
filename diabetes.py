@@ -117,7 +117,6 @@ elif st.session_state.page == "table":
 # Line Chart Page
 elif st.session_state.page == "line_chart":
     st.title("Hasil Prediksi & Probabilitas")
-    st.write("Menggunakan Pemodelan Random Forest")
   
     # Validasi input data
     if st.session_state.input_data is None or 'data' not in st.session_state:
@@ -173,7 +172,6 @@ elif st.session_state.page == "line_chart":
 # Pie Chart Page
 elif st.session_state.page == "pie_chart":
     st.title("Hasil Prediksi & Probabilitas")
-    st.write("Menggunakan Pemodelan Random Forest")
 
     if st.session_state.input_data is None or 'data' not in st.session_state:
         st.warning("⚠️ Silakan isi data pasien terlebih dahulu di menu Input Data Pasien.")
@@ -230,7 +228,6 @@ elif st.session_state.page == "pie_chart":
 # Bar Chart Page
 elif st.session_state.page == "bar_chart":
     st.title("Hasil Prediksi & Probabilitas")
-    st.write("Menggunakan Pemodelan Random Forest")
     
     if st.session_state.input_data is None or 'data' not in st.session_state:
         st.warning("⚠️ Silakan isi data pasien terlebih dahulu di menu Input Data Pasien.")
