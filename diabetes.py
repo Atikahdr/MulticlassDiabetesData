@@ -102,7 +102,7 @@ elif st.session_state.page == "table":
         data_input_transpose.rename(columns={0: "Data Patient"}, inplace=True)
         st.dataframe(data_input_transpose)
 
-        # Prediksi
+ # Prediction
         prediction, prob = predict_diabetic(model, scaler, st.session_state.input_data)
 
         st.title("Prediction Results")
@@ -159,15 +159,15 @@ elif st.session_state.page == "line_chart":
         with col3:
             st.metric('AGE x BMI', f"{data_input['AGE x BMI'][0]:.1f} kg/m²")
 
-        # Prediksi
+        # Prediction
         prediction, prob = predict_diabetic(model, scaler, st.session_state.input_data)
 
         if prediction[0] == 0:
             st.success("✅ The patient is Non Diabetic")
         elif prediction[0] == 1:
-            st.warning("⚠️ Patients at HIGH RISK of developing Predict Diabetic")
+            st.warning("⚠️ Patients at HIGH RISK of Predict Diabetic")
         else:
-            st.error("⚠️ Patients at HIGH RISK of developing Diabetic")
+            st.error("⚠️ The patient is Diabetic")
 
 # Pie Chart Page
 elif st.session_state.page == "pie_chart":
@@ -187,7 +187,7 @@ elif st.session_state.page == "pie_chart":
         with col3:
             st.metric("BMI", f"{data_input['BMI'][0]:.1f} kg/m²")
 
-        # Prediksi
+        # Prediction
         prediction, prob = predict_diabetic(model, scaler, st.session_state.input_data)
 
         # Pie chart Probability
@@ -204,9 +204,9 @@ elif st.session_state.page == "pie_chart":
         if prediction[0] == 0:
             st.success("✅ The patient is Non Diabetic")
         elif prediction[0] == 1:
-            st.warning("⚠️ Patients at HIGH RISK of developing Predict Diabetic")
+            st.warning("⚠️ Patients at HIGH RISK of Predict Diabetic")
         else:
-            st.error("⚠️ Patients at HIGH RISK of developing Diabetic")
+            st.error("⚠️ The patient is Diabetic")
 
         # Fungsi untuk Display persentase hanya jika > 0
         def autopct_format(pct):
@@ -268,12 +268,12 @@ elif st.session_state.page == "bar_chart":
         with col3:
             st.metric('AGE x BMI', f"{data_input['AGE x BMI'][0]:.1f} kg/m²")
 
-       # Prediksi
+       # Prediction
         prediction, prob = predict_diabetic(model, scaler, st.session_state.input_data)
 
         if prediction[0] == 0:
             st.success("✅ The patient is Non Diabetic")
         elif prediction[0] == 1:
-            st.warning("⚠️ Patients at HIGH RISK of developing Predict Diabetic")
+            st.warning("⚠️ Patients at HIGH RISK of Predict Diabetic")
         else:
-            st.error("⚠️ Patients at HIGH RISK of developing Diabetic")
+            st.error("⚠️ The patient is Diabetic")
