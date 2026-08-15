@@ -1,221 +1,437 @@
 Dataset by Kaggle : https://www.kaggle.com/datasets/yasserhessein/multiclass-diabetes-dataset
+
 Machine Learning Prediction by Streamlit : https://multiclassdiabetesdata-machinelearning-prediction.streamlit.app/
 
-🧪 Multiclass Diabetes Classification
+ ---
+ 
+🧪 Multiclass Diabetes Clinical Decision Support System
 ---
+An AI-powered Clinical Decision Support System (CDSS) for multiclass diabetes prediction using clinical laboratory biomarkers and machine learning.
+
+The project combines data analysis, statistical testing, feature engineering, machine learning, model evaluation, and Streamlit deployment into an interactive clinical prediction and analytics platform.
+
+    Disclaimer: This system is designed to support clinical decision-making and early screening. 
+                It is not intended to replace professional medical diagnosis or clinical judgment.
+---
+
 📌 Project Overview
 ---
-This project aims to build a multiclass classification model to predict diabetes categories based on clinical and laboratory features. The dataset contains demographic, metabolic, and kidney-related biomarkers.
+The objective of this project is to develop a machine learning system capable of classifying patients into three diabetes-related categories:
 
-The objective is not only to detect diabetes, but also to analyze feature interactions that may help differentiate metabolic severity.
+    ✅ Non-Diabetic
+    ⚠️ Prediabetes
+    🔴 Diabetes
+
+The system uses demographic information and clinical laboratory biomarkers to generate predictions and provide an interactive analytics environment for monitoring patient outcomes.
+
+Key Components
+
+    🧹 Data Cleaning & Preprocessing
+    📊 Exploratory Data Analysis
+    🧪 Statistical Analysis
+    🔍 Feature Selection & Multicollinearity Analysis
+    🤖 Machine Learning Model Comparison
+    ⚙️ Hyperparameter Tuning
+    📈 Model Evaluation & ROC-AUC Analysis
+    🔎 Overfitting & Generalization Analysis
+    🚀 Streamlit Deployment
+    📊 Interactive Clinical Analytics
+    💡 Clinical Recommendations
 
   ---
 
-🔎 1. Data Cleaning
+📂 Dataset
 ---
-In a medical context, Total Cholesterol cannot be 0 (normally >100 mg/dL or >2 mmol/L).
+The dataset contains 264 patient records with demographic and clinical laboratory information.
 
-A value of 0 likely indicates:
- - Input error
- - Laboratory result not recorded
- - Missing value incorrectly stored as 0
+**Clinical Features**
 
-Therefore, cholesterol values equal to 0 were treated as invalid entries and handled appropriately during preprocessing.
+|Feature |Description|
+---------|-------------
+|Gender |	Patient gender|
+|AGE |	Patient age|
+|HbA1c | Glycated hemoglobin|
+|BMI	| Body Mass Index|
+|Urea |	Blood urea measurement|
+|Creatinine |	Creatinine level|
+|Cholesterol |	Total cholesterol|
+|HDL |	High-density lipoprotein|
+|LDL |	Low-density lipoprotein|
+|TG |	Triglycerides|
+|VLDL |	Very-low-density lipoprotein|
+
+**Target**
+
+The target variable contains three classes:
+
+- Non-Diabeti
+- Prediabetes
+- Diabetes
+---
+
+🧹 1. Data Cleaning & Preprocessing
+---
+The dataset was prepared before modeling through several preprocessing steps:
+
+ - Data quality inspection
+ - Missing-value checkin
+ - Data type validation
+ - Duplicate checking
+ - Numerical feature inspection
+ - Categorical feature encoding
+ - Unit consistency checking
+ - Distribution analysis
+
+The cleaned dataset was then prepared for exploratory analysis and machine learning.
   
   ---
   
-  📊 2. Target Class Distribution
+  📊2. Exploratory Data Analysis
 ---
-The dataset contains three classes with the following proportions:
+Exploratory Data Analysis was performed to understand patient characteristics and identify patterns within the clinical variables.
 
-|Class	| Proportion|
-|-------|-----------|
-|2	| 47.89%|
-|0	| 36.78%|
-|1	| 15.33%|
+The analysis included:
 
-The dataset is moderately imbalanced, particularly for Class 1, which motivates the use of SMOTE in the modeling stage.
+- Distribution analysis
+- Descriptive statistics
+- Skewness analysis
+- Patient demographic analysis
+- Biomarker distribution
+- Target class distribution
+- Relationship between clinical variables and diabetes categories
 
  ---
  
-⚙️ 3. Feature Engineering
+🎯 3. Target Class Distribution
 ---
 
-To enhance biological interpretability and capture interactions, new features were created:
+The dataset contains three prediction classes:
 
-🧪 New Features
+|Class |Patients |Percentage | 
+|------|-----------|----------|
+|Diabetes |	128 |	48.48% |
+|Non-Diabetic |	96 |	36.36% |
+|Prediabetes |	40 |	15.15% |
 
- - Urea_Cr_Ratio
-   Clinically relevant ratio used to assess kidney function.
-
- - BMI_HbA1c
-   Interaction between obesity (BMI) and blood sugar control (HbA1c). Helps capture metabolic risk patterns.
-
- - AGE_BMI
-   Combines age and obesity, both important diabetes risk factors.
-
-These engineered features significantly improved class separability.
+The class distribution was evaluated before model development to determine whether class imbalance could affect model performance.
 
  ---
  
- 📈 4. Feature Selection
+ 🧪 4. Statistical Analysis
 ---
-
-🔹 ANOVA Test
-
-   Top significant features based on F-Score:
-
-  | Feature	| F-Score	| p-value|
-  | --------|---------|----------|  
-  | BMI_HbA1c	| 263.26	| 4.95e-63 |
-  | HbA1c	| 195.42	| 2.15e-52 |
-  | BMI	| 184.78	| 1.58e-50 |
-  | AGE_BMI	| 171.47	| 4.26e-48 |
-  | AGE	| 58.39	| 1.20e-21 |
-
-Features like HDL and LDL showed low significance.
+Statistical testing was performed to determine which clinical variables showed meaningful differences across diabetes categories.
 
 🔹 Chi-Square Test
 
-  | Feature	  | Score	    | p-value   |
-  |-----------|-----------|-----------|
-  | BMI_HbA1c	| 7.73e+06	| 4.25e-229 |
-  | HbA1c	    | 1.88e+04	| 1.82e-115 |
+The categorical relationship between gender and diabetes classification was evaluated using the Chi-Square test.
 
-Both tests confirm that HbA1c and BMI_HbA1c are extremely strong predictors.
+**Result:**
 
-⭐ Feature Importance Insight
+- Chi-Square: 14.0321
+- p-value: 0.0009
 
- - HbA1c indicates whether someone has diabetes, but does not fully differentiate metabolic severity.
+This indicates a statistically significant association between gender and the target classification.
 
- - BMI_HbA1c (interaction feature) reveals:
-    - High BMI + High HbA1c → likely Type 2 diabetes (insulin resistance)
-    - Low BMI + High HbA1c → possible Type 1 diabetes
+**Kruskal-Wallis Test**
 
-This interaction provides better clinical interpretability.
+Because several numerical variables did not follow a normal distribution, the Kruskal-Wallis test was used to compare distributions across the three diabetes categories.
+
+Significant features included:
+
+- HbA1c
+- BMI
+- AGE
+- TG
+- VLDL
+- Cholesterol
+- Urea
+- Creatinine
+
+These findings supported the relevance of several clinical biomarkers for the classification task.
  
  ---
  
- 🤖 5. Model Comparison
+🔍 5. Feature Selection & Multicollinearity
 ---
 
-| Algorithm	 | ROC AUC | Accuracy	| STD |
-|------------|---------|----------|-----|
-| Random Forest	| 99.50	| 97.12	| 2.79 |
-| Gradient Boosting	| 99.31	| 98.07	| 2.36 |
-| Decision Tree	| 98.10	| 97.60	| 2.16 |
-| SVM	| 96.06	| 87.03	| 4.66 | 
-| Logistic Regression	| 92.43	| 87.02	| 5.36 |
-| KNN	| 89.79	| 79.85	| 6.23 | 
+Feature relationships were further evaluated using Variance Inflation Factor (VIF).
 
-🏆 Best Model: Random Forest
+The final feature set showed acceptable multicollinearity levels, with the predictor variables remaining within a safe VIF range.
 
-Random Forest achieved the highest ROC AUC with strong stability.
+This step helped ensure that highly redundant predictors did not unnecessarily affect the model.
 
+**Final Features**
+
+- Gender
+- AGE
+- HbA1c
+- BMI
+- Cr_mgdl
+- Urea_mgdl
+- Chol_mgdl
+- HDL_mgdl
+- LDL_mgdl
+- TG_mgdl
+- VLDL_mgdl
  ---
  
-⚖️ 6. Handling Class Imbalance (SMOTE)
+🤖 6. Machine Learning Model Comparison
 ---
 
-Oversampling was performed after train-test split and during cross-validation.
+Several classification algorithms were evaluated as baseline models:
 
-Important principle:
- - SMOTE applied only to training data
- - Validation/test data kept in original distribution
+- Logistic Regression
+- Decision Tree
+- Random Forest
+- Gradient Boosting
+- K-Nearest Neighbors
+- Support Vector Machine
+- XGBoost
 
-This prevents data leakage and ensures realistic model evaluation.
+Models were evaluated using Stratified 5-Fold Cross Validation.
+
+**Baseline Performance**
+
+|Model | Accuracy|
+|-----|------|
+|XGBoost |	97.63%|
+|Random Forest |	96.69%|
+|Decision Tree |	96.69%|
+|Logistic Regression	| 85.30%|
+|KNN	| 79.60%|
+
+Among the evaluated models, XGBoost achieved the strongest baseline performance.
  
  ---
  
-🔧 7. Hyperparameter Tuning
+⚙️ 7. Hyperparameter Tuning
+---
+The XGBoost model was further optimized using RandomizedSearchCV with:
+
+- 50 parameter combinations
+- 5-fold cross-validation
+- Weighted F1-score as the optimization metric
+
+**Best Parameters**
+
+    - n_estimators = 50
+    - max_depth = 6
+    - learning_rate = 0.05
+    - subsample = 0.9
+    - colsample_bytree = 0.8
+    - min_child_weight = 3
+
+**Best Cross-Validation Score**
+
+Weighted F1 Score: 97.13%
+
+ ---
+
+📈 8. Final Model Evaluation
 ---
 
-Best Parameters:
+The tuned XGBoost model was evaluated on the test dataset.
 
-    Best Parameters: {'n_estimators': 200}
-    Best CV Accuracy: 0.9766666666666666
+**Final Performance**
+|Metric |	Score |
+|-------|-------|
+|Accuracy	| 98.11%|
+|F1 Score	| 98.12%|
+|ROC-AUC |	99.91%|
+
+The results demonstrate strong predictive performance across the three diabetes categories.
+
+**ROC-AUC**
+
+ROC-AUC was used as an additional evaluation metric to assess the model's ability to distinguish between the multiclass outcomes.
+
+ ---
+
+🔎 9. Overfitting & Generalization Check
+---
+
+Model performance was reviewed across training and testing datasets to evaluate generalization.
+
+The analysis was used to identify potential overfitting and ensure that the final model's performance was not solely dependent on the training data.
+
+Cross-validation results were also considered alongside the final test performance to provide a more reliable assessment of model behavior.
+
+ ---
+
+🖥️ 10. Streamlit Clinical Dashboard
+---
+
+The final model was integrated into an interactive Streamlit application.
+
+The dashboard was designed as a Clinical Decision Support System rather than only a prediction interface.
+
+**🏠 Dashboard**
+
+The Home dashboard provides:
+
+- AI-powered system introduction
+- Project Summary
+- Model performance overvie
+- System Features
+- AI Clinical Workflow
+- Technology Stack
+
+**🔮 Prediction**
+
+Users can enter patient information and clinical laboratory biomarkers to generate a multiclass prediction.
+
+The prediction workflow includes:
+
+    Patient Information
+            ↓
+    Clinical Biomarkers
+            ↓
+    Tuned XGBoost Model
+            ↓
+        Prediction
+            ↓
+      Confidence Score
+            ↓
+    Clinical Recommendation
+ ---
+
+📊 11. Clinical Analytics Dashboard
+---
+
+The Analytics dashboard provides an interactive overview of prediction results.
+
+**Analytics Features**
+
+    📌 Total Patients
+    ✅ Non-Diabetic Cases
+    ⚠️Prediabetes Cases
+    🔴 Diabetes Cases
+    📈 Prediction Trend
+    🍩 Prediction Distribution
+    👥 Age Distribution
+    🧪 Biomarker Analysis
+    🚨 High-Risk Patient Monitoring
+    💡 Clinical Recommendations
+
+The dashboard also includes filtering functionality to allow users to explore prediction results dynamically.
+
+ ---
+
+📜 12. Prediction History
+---
+
+Each prediction can be recorded in the application history.
+
+The history section provides patient-level information including:
+
+ - Medical Record
+ - Patient Name
+ - Age
+ - Gender
+ - BMI
+ - HbA1c
+ - Prediction
+ - Confidence
+ - Assessment Time
+  
+This allows previous prediction results to be reviewed and monitored.
+
+ ---
+
+🚨 13. High-Risk Patient Monitoring
+---
+
+A dedicated High-Risk Patients table was implemented to highlight patients classified as Diabetes with high prediction confidence.
+
+The monitoring interface includes:
+
+- Patient identification
+- Demographic information
+- BMI
+- HbA1c
+- Prediction confidence
+- Risk classification
+
+This feature helps users quickly identify predictions that may require further clinical attention.
+
+ ---
+
+💡 14. Clinical Recommendations
+---
+The system provides AI-assisted recommendations based on prediction outcomes and observed clinical indicators.
+
+Recommendations are intended to support healthcare professionals by highlighting potential areas for further assessment.
+
+    These recommendations are supportive insights only and should not be interpreted as medical diagnosis or treatment instructions.
     
-Tuning improved model generalization and stability.
-
  ---
-
-📉 8. Overfitting Check
----
-
-🔹 Gap (Train – Test)
-
- - Accuracy Gap: 1.89%
- - ROC AUC Gap: 0.34%
-
-The small gap indicates very low overfitting and strong generalization performance.
-
- ---
-
-📊 9. Final Model & ROC Curve
----
-
-The final selected model is Random Forest with 200 trees.
-
-The ROC Curve demonstrates excellent class separability with near-perfect AUC values.
-
- ---
-
-
-🎯 Conclusion
----
-
- - Engineered interaction features significantly improved performance.
- - HbA1c alone is powerful, but combining it with BMI enhances predictive power.
- - Random Forest provides robust performance with minimal overfitting.
- - Proper SMOTE implementation ensured fair validation.
-
-This project highlights how combining clinical domain knowledge + feature engineering + proper validation strategy leads to highly accurate multiclass classification models.
-
- ---
-
-🚀 Deployment Ready
----
-
-The multiclass diabetes classification model has been fully trained, validated, and evaluated.
-
-After performing:
- - Data cleaning
- - Feature engineering
- - Feature selection (ANOVA & Chi-Square)
- - Class balancing using SMOTE
- - Hyperparameter tuning
- - Overfitting validation
-
-The final Random Forest model demonstrates strong generalization performance and stable metrics.
-
-- ✅ The multiclass dataset pipeline is production-ready
-- ✅ The trained model is ready for deployment
-- ✅ Successfully deployed using Streamlit for interactive prediction
-
-The Streamlit application allows users to:
-
-- Input clinical parameters (Age, BMI, HbA1c, Cholesterol, etc.)
-- Automatically generate engineered features
-- Predict diabetes class in real-time
-- Display prediction probabilities
-
-This ensures the model is not only accurate in experimentation, but also practical for real-world usage.
  
- ---
-
-📚 Concepts Covered
+🎨 15. Professional UI & User Experience
 ---
 
-- 🧾 Multiclass Classification
-- 🧪 Clinical Data Analysis
-- 🧹 Data Cleaning & Missing Value Handling
-- ⚙️ Feature Engineering (Biological Feature Interaction)
-- 📊 Statistical Feature Selection (ANOVA & Chi-Square)
-- ⚖️ Handling Imbalanced Data (SMOTE)
-- 🤖 Ensemble Learning (Random Forest, Gradient Boosting)
-- 🔧 Hyperparameter Tuning
-- 📈 ROC AUC Evaluation & Model Comparison
-- 🚀 Model Deployment with Streamlit
+The application was designed with a modern healthcare dashboard interface inspired by enterprise analytics platforms.
+
+The UI includes:
+
+- Responsive layouts
+- Premium KPI cards
+- Interactive Plotly charts
+- Hover animations
+- Light / Dark theme support
+- Interactive navigation
+- Prediction history
+- Clinical insight cards
+- Risk badges
+- Responsive feature cards
+- Professional dashboard sections
+
+ ---
+
+🛠️ Technology Stack
+---
+
+|Technology |	Purpose |
+|-----------|---------|
+|🐍 Python	| Core programming language|
+|⚡ Streamlit	| Web application & deployment|
+|🌳 XGBoost	| Final machine learning model|
+|📊 Plotly	| Interactive visualization|
+|🐼 Pandas	| Data processing|
+|🔢 NumPy	| Numerical computation|
+|🤖 Scikit-learn |	ML preprocessing & evaluation|
+|🎨 HTML/CSS	| Dashboard UI customization|
+
+ ---
+
+ 🎯 Conclusion
+---
+This project demonstrates an end-to-end Machine Learning and Data Science workflow, starting from raw clinical data preparation and exploratory analysis through statistical testing, feature analysis, model development, hyperparameter optimization, evaluation, and deployment.
+
+The final **Tuned XGBoost Multiclass Classifier** achieved:
+
+    98.11% Accuracy · 98.12% F1 Score · 99.91% ROC-AUC
+
+Beyond the predictive model, the project extends machine learning into a complete **Clinical Decision Support System** with patient prediction, analytics, prediction history, high-risk monitoring, and clinical recommendation features.
+
+The project demonstrates practical skills in:
+
+**Data Science → Machine Learning → Model Evaluation → Visualization → Application Development → Deployment**
+
+ ---
+ 
+👩‍💻 Author
+---
+Atikah Dwi Rizky
+
+Information Systems | Data Science & Machine Learning
+
+---
+
+⚠️ Medical Disclaimer
+---
+This project is developed for educational, research, and demonstration purposes.
+
+The predictions and recommendations generated by this system should not be considered a definitive medical diagnosis, treatment recommendation, or substitute for professional medical judgment.
 
 
  
