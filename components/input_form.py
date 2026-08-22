@@ -1,5 +1,6 @@
 import streamlit as st
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 from components.validation import validate_form, validation_popup
 from components.patient_identity import patient_identity
@@ -10,9 +11,9 @@ from components.prediction_button import prediction_button
 
 def input_form():
 
-    assessment_time = datetime.now().strftime(
-        "%d %b %Y • %H:%M"
-    )
+    assessment_time = datetime.now(
+        ZoneInfo("Asia/Jakarta")
+    ).strftime("%d %b %Y • %H:%M")
 
     with st.form(
         "input_form",

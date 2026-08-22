@@ -4,6 +4,7 @@ import joblib
 from pathlib import Path
 
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 from components.load_css import load_css
 from components.navbar import navbar
@@ -76,7 +77,7 @@ if submitted:
     }
 
     history_item = {
-        "Date": datetime.now().strftime("%d-%m-%Y %H:%M"),
+        "Date": datetime.now(ZoneInfo("Asia/Jakarta")).strftime("%d-%m-%Y %H:%M"),
         "Medical Record": patient_info["Medical Record"],
         "Patient Name": patient_info["Patient Name"],
         **patient_data, # Clinical Data
