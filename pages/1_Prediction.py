@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import joblib 
+from pathlib import Path
 
 from datetime import datetime
 
@@ -28,14 +29,19 @@ navbar()
 
 # LOAD MODEL
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+MODEL_DIR = BASE_DIR / "model"
+
+
 @st.cache_resource
 def load_artifacts():
-    
-    model = joblib.load("model/tuned_xgboost.pkl")
-    scaler = joblib.load("model/scaler.pkl")
-    feature_columns = joblib.load("model/feature_columns.pkl")
+
+    model = joblib.load(MODEL_DIR / "tuned_xgboost.pkl")
+    scaler = joblib.load(MODEL_DIR / "scaler.pkl")
+    feature_columns = joblib.load(MODEL_DIR / "feature_columns.pkl")
 
     return model, scaler, feature_columns
+
 
 model, scaler, feature_columns = load_artifacts()
 
