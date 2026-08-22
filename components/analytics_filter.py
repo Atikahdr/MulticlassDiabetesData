@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime
+from zoneinfo import ZoneInfo
+
 
 
 def analytics_filter(df):
@@ -53,7 +55,7 @@ disease trends, and laboratory biomarkers.
 
     with col2:
 
-        now = datetime.now()
+        now = datetime.now(ZoneInfo("Asia/Jakarta"))
 
         st.markdown(f"""
 <div class="analytics-header-card analytics-update">
