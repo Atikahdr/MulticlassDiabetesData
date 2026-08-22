@@ -69,7 +69,7 @@ Last Updated
 </div>
 
 <div class="time-caption">
-{now.strftime("%I:%M %p")}
+{now.strftime("%H:%M")}
 </div>
 
 </div>
