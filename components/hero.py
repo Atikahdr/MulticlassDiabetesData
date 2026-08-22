@@ -69,7 +69,7 @@ and patient monitoring.
     with right:
 
         st.image(
-            "assets/doctor.png",
+            "assets/BloodSugar.jpg",
             width=430
         )
 
